@@ -19,39 +19,57 @@ $(document).ready(function() {
 
     magicMouse(mm_options);
 
-    function setMagicMouse(Id) {   
-        //mouse effect increse to half of hovered id     
+    $(".magic-hover").each(function(){
+        // altering default pointer
+        $('#magicPointer').css({
+            transition : "transform 0.5s, width 0.5s, height 0.5s, border-radius 0.5s", 
+            background : "red" 
+        });
 
-        var specialeffect = $(Id);
+        // resetting to the default for background color
+        $(this).on('mouseenter', function(){
+            $('#magicPointer').css({
+                background : "#fff" 
+            });
+        });
+
+        // going to the the altering for background
+        $(this).on('mouseleave', function(){
+            $('#magicPointer').css({
+                background : "red" 
+            });
+        });
+    });
+
+    function changeMouseSize(eL) {     
+        var specialeffect = $(eL);
         var specialeffectWidthHalf = specialeffect.width() / 2;
-
-        specialeffect.on('mouseenter', function() {
-            
-            var magicPointer = $('#magicPointer');
+        var magicPointer = $('#magicPointer');
+     
+        // altering the original size based on eL
+        specialeffect.on('mouseenter', function() {    
             magicPointer.css({
                 width: (specialeffectWidthHalf - 10) + "px",
-                height: (specialeffectWidthHalf - 10) + "px",
-         
+                height: (specialeffectWidthHalf - 10) + "px",           
             });
             
         });
-
-        specialeffect.on('mouseleave', function() {
-            var magicPointer = $('#magicPointer');
+        // resetting default size
+        specialeffect.on('mouseleave', function() {     
             magicPointer.css({
                 width: "",
-                height: ""
+                height: "",            
             });
         });
     };
-    // call to effect
-    setMagicMouse('#specialeffect2');
-    setMagicMouse('#specialeffect4');
-    setMagicMouse('#specialeffect');
+ 
+    // toggling for each specialeffect div size
+    $('.specialeffect').each(function() {
+        changeMouseSize($(this));
+    });
 
-    function setCardEffectMagicMouse(Id) {   
-        // Interactions with ids
-        var card = $(Id);
+    function setCardEffectMagicMouse(eL) {   
+        var card = eL;
         var mouseHover = false;
         var mousePosition = { x: 0, y: 0 };
         var cardSize = { width: 0, height: 0 };
@@ -76,7 +94,10 @@ $(document).ready(function() {
                 width: card[0].offsetWidth || 0,
                 height: card[0].offsetHeight || 0,
             };
-            card.css('transform', 'perspective(1000px) rotateX(' + ((mousePosition.y / cardSize.height) * -(SCALE_Y * 2) + SCALE_Y) + 'deg) rotateY(' + ((mousePosition.x / cardSize.width) * (SCALE_X * 2) - SCALE_X) + 'deg) translateZ(10px)');
+            card.css({
+                'transition': 'transform 0.4s ease', 
+                'transform': 'perspective(1000px) rotateX(' + ((mousePosition.y / cardSize.height) * -(SCALE_Y * 2) + SCALE_Y) + 'deg) rotateY(' + ((mousePosition.x / cardSize.width) * (SCALE_X * 2) - SCALE_X) + 'deg) translateZ(10px)'
+                });
         });
 
         card.mouseout(function() {
@@ -88,12 +109,14 @@ $(document).ready(function() {
             mouseHover = true;
         });
     }
-    // call to effect
-    setCardEffectMagicMouse('#cardeffect1');
-    setCardEffectMagicMouse('#cardeffect2');
-    setCardEffectMagicMouse('#cardeffect3');
-    // magic mouse settings end ===========>
+    
+
+    $('.cardeffectEx').each(function() {
+        setCardEffectMagicMouse($(this));
+    });
+
 });
+    
 
 /// Below are some working code kept for reference to use in diferent case which are tested to develop above code
 
